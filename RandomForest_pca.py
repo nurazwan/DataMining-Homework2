@@ -7,7 +7,7 @@ from joblib import dump
 X_train, X_test, y_train, y_test = get_data_reduced()
 
 F_params={'n_estimators':[100,200,400,800,1600],'criterion':['gini', 'entropy'], 
-'max_depth':[1,2,5,10,None], 'min_samples_split':[2,4,8], 'min_samples_leaf':[2,4,8],'bootstrap':[True,False],
+'max_depth':[2,5,10,None], 'min_samples_split':[2,4,8], 'min_samples_leaf':[2,4,8],'bootstrap':[True,False],
 'oob_score':[True,False]}
 
 Model=GridSearchCV(RandomForestClassifier(),param_grid=F_params,cv=10,verbose=5, n_jobs=-1,scoring='recall')
