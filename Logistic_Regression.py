@@ -1,6 +1,7 @@
 import os
 from data_prep import get_data_reduced
 from output_generator import model_metrics
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
@@ -14,10 +15,10 @@ os.chdir('./LogisticRegression_reduction')
 
 X_train, X_test, y_train, y_test = get_data_reduced()
 
-params={'C':[0.001,0.01,0.1,1,2,3],
-'solver':['newton-cg', 'lbfgs', 'liblinear', 'sag', 'saga']
-}
+c_val=list(np.linspace(0.001,10,1000))
+params={'C':c_val}
 
-model=GridSearchCV(LogisticRegression(), param_grid=params, scoring='recall', n_jobs=-1, cv=10, verbose=-1)
+gs=GridSearchCV(LogisticRegression(), param_grid=params, scoring='recall', n_jobs=-1, cv=10, verbose=1)
+model=gs.fit(X_train,y_train)
 
 model_metrics(model,X_test,y_test)
