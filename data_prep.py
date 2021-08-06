@@ -1,11 +1,11 @@
 def get_data():
     import pandas as pd
     from sklearn.model_selection import train_test_split
-    df=pd.read_excel('homework_2_data.xlsx',header=1,index_col='ID')
+    df=pd.read_excel('../homework_2_data.xlsx',header=1,index_col='ID')
     df=df.reset_index().drop(columns=['ID'])
     y=df.iloc[:,-1]
     X=df.iloc[:,0:(len(df.columns)-1)]
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, stratify=y)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y)
     return X_train, X_test, y_train, y_test
 
 def get_data_reduced():
@@ -13,8 +13,9 @@ def get_data_reduced():
     import pandas as pd
     from sklearn.model_selection import train_test_split
     from sklearn.decomposition import PCA
+    from joblib import dump
 
-    df=pd.read_excel('homework_2_data.xlsx',header=1,index_col='ID')
+    df=pd.read_excel('../homework_2_data.xlsx',header=1,index_col='ID')
     df=df.reset_index().drop(columns=['ID'])
     
     cat_var=df.iloc[:,1:4]
@@ -23,8 +24,9 @@ def get_data_reduced():
     pca_var=pca.fit(num_var)
     pca_var_mod=pca.transform(num_var)
     pca_model=pd.DataFrame(pca_var_mod,columns=['pc1','pc2','pc3','pc4'])
+    dump(pca_model,'pca_object.joblib')
 
     X=pd.concat([cat_var,pca_model],axis=1)
     y=df.iloc[:,-1]
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, stratify=y)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y)
     return X_train, X_test, y_train, y_test
