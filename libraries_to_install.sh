@@ -5,7 +5,7 @@ apt update
 apt upgrade -y
 
 #install pip
-apt install python3-pip
+apt install python3-pip -y
 
 #install packages
 pip3 install numpy
