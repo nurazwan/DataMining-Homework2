@@ -3,9 +3,10 @@ from data_prep import get_data_reduced
 from output_generator import model_metrics
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+from matplotlib import pyplot plt
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV
+from joblib import dump
 
 #Create folder and change working directory
 os.mkdir('LogisticRegression_reduction')
@@ -22,5 +23,8 @@ params={'C':c_val}
 #create model
 gs=GridSearchCV(LogisticRegression(), param_grid=params, scoring='recall', n_jobs=-1, cv=10, verbose=1)
 model=gs.fit(X_train,y_train)
+
+#save model
+dump(model,'LR_model_reduced.joblib')
 
 model_metrics(model,X_test,y_test)

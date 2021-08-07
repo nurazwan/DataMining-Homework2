@@ -3,9 +3,10 @@ from data_prep import get_data_reduced
 from output_generator import model_metrics
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
+from joblib import dump
 
 #Create folder and change working directory
 os.mkdir('RandomForest_reduction')
@@ -23,5 +24,8 @@ F_params={'n_estimators':[100,200,400,800,1600],'criterion':['gini', 'entropy'],
 #Train model with cross validation
 gs=GridSearchCV(RandomForestClassifier(),param_grid=F_params,cv=10,verbose=5, n_jobs=-1,scoring='recall')
 model=gs.fit(X_train,y_train)
+
+#save model
+dump(model,'RandomForest_reduced.joblib')
 
 model_metrics(model,X_test,y_test)
